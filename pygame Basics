@@ -1,0 +1,29 @@
+import sys, pygame
+pygame.init()
+size=width, height=1000, 600
+speed=5
+white=255,255,255
+screen=pygame.display.set_mode(size)
+color=(0, 250, 250)
+center=[500, 300]
+Radius=50
+while True:
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT: sys.exit()
+        '''
+    if center[0]<0 or center[0]>width:
+
+    if center[1]<0 or center[1]>height:
+'''
+    keys=pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]and center[0]-Radius>0:
+        center[0]-=speed
+    if keys[pygame.K_RIGHT]and center[0]+Radius<1000:
+        center[0]+=speed
+    if keys[pygame.K_UP]and center[1]-Radius>0:
+        center[1]-=speed
+    if keys[pygame.K_DOWN]and center[1]+Radius<600:
+        center[1]+=speed
+    screen.fill(white)
+    pygame.draw.circle(screen, color, center, Radius)
+    pygame.display.update()
