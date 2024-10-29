@@ -1,0 +1,22 @@
+import sys, pygame
+pygame.init()
+size=width, height=1500, 1100
+white=255,255,255
+screen=pygame.display.set_mode(size)
+color=(0,0,0)
+rows=4
+thickness= 5
+spacing= 20
+starting= [500, 200]
+ending= [500, 100]
+length=starting[1]-ending[1]
+print(length)
+running= True
+while running:
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT: sys.exit()
+    screen.fill(white)
+    pygame.draw.line(screen, color, starting, ending, thickness)
+    pygame.display.update()
+pygame.quit()
+sys.exit()
