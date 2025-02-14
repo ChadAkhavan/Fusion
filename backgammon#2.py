@@ -46,8 +46,18 @@ whitepieces=[]
 spacing1=width/14
 spacing2=height/6
 color=0,0,0
+gray=156, 153, 146
+draggingColor=color
 mouse_position=(0,0)
 drawing=False
+dragging=False
+dragPieces=[]
+
+def CircleClick(circle_x, circle_y, radius, mouse_x, mouse_y):
+     
+     distance=((circle_x-mouse_x)**2+(circle_y-mouse_y)**2)**0.5
+
+     return distance <=radius
 
 def drawTri():
     start= [0,0]
@@ -223,17 +233,36 @@ while running:
 
 
         elif event.type==pygame.MOUSEBUTTONDOWN:
-            drawing=True
-
+            
+            mouse_x, mouse_y=pygame.mouse.get_pos()
+            for piece in blackpieces:
+                 if CircleClick(piece[0][0],piece[0][1],piece[1],mouse_x,mouse_y):
+                      dragging=True
+                      draggingColor=color
+            for piece in whitepieces:
+                 if CircleClick(piece[0][0],piece[0][1],piece[1],mouse_x,mouse_y):
+                    dragging=True
+                    draggingColor=gray
+            if(dragging):
+                print("drag")
+            else:
+                 drawing=True
         elif event.type==pygame.MOUSEMOTION:
-            if (drawing):
-                mouse_position=pygame.mouse.get_pos()
-                #pygame.draw.line(myScreen, black, mouse_position, mouse_position, 10)
+            mouse_position=pygame.mouse.get_pos()
+            
+                
+            if (dragging):
+                 dragPieces.append((draggingColor,mouse_position,radius))
+                 if(len(dragPieces)>2):
+                    dragPieces.pop(0)
+            elif (drawing):
                 pygame.draw.circle(myScreen, color, mouse_position, 10)
+
 
         elif event.type==pygame.MOUSEBUTTONUP:
             mouse_position=(0,0)
             drawing=False
+            dragging=False
 
     
 
@@ -247,6 +276,9 @@ while running:
 
     for piece in whitepieces:
          pygame.draw.circle(myScreen, (156, 153, 146), piece[0], piece[1])
+
+    for piece in dragPieces:
+         pygame.draw.circle(myScreen, piece[0], piece[1], piece[2])
 
     myScreen.blit(roll1, (6.10*spacing1, height/2.75))
     myScreen.blit(roll2, (7.13*spacing1, height/2.75))
