@@ -231,39 +231,47 @@ while running:
         if event.type==pygame.QUIT: 
             sys.exit()
 
-
         elif event.type==pygame.MOUSEBUTTONDOWN:
-            
+            dragPieces=[]
             mouse_x, mouse_y=pygame.mouse.get_pos()
             for piece in blackpieces:
                  if CircleClick(piece[0][0],piece[0][1],piece[1],mouse_x,mouse_y):
                       dragging=True
                       draggingColor=color
+                      blackpieces.remove(piece)
             for piece in whitepieces:
                  if CircleClick(piece[0][0],piece[0][1],piece[1],mouse_x,mouse_y):
                     dragging=True
                     draggingColor=gray
-            if(dragging):
-                print("drag")
-            else:
-                 drawing=True
-        elif event.type==pygame.MOUSEMOTION:
-            mouse_position=pygame.mouse.get_pos()
-            
-                
-            if (dragging):
-                 dragPieces.append((draggingColor,mouse_position,radius))
-                 if(len(dragPieces)>2):
-                    dragPieces.pop(0)
-            elif (drawing):
-                pygame.draw.circle(myScreen, color, mouse_position, 10)
-
+                    whitepieces.remove(piece)
 
         elif event.type==pygame.MOUSEBUTTONUP:
-            mouse_position=(0,0)
-            drawing=False
+            #drawing=False
             dragging=False
+            if(len(dragPieces)>0):
+                FinalPos=dragPieces.pop(0)
+                if (FinalPos[0]==gray):
+                    FinalPos.pop(0)
+                    whitepieces.append(FinalPos)
+                else:
+                    FinalPos.pop(0)
+                    blackpieces.append(FinalPos)
 
+        elif event.type==pygame.MOUSEMOTION:
+            mouse_position=pygame.mouse.get_pos()
+                
+            if (dragging):
+                 dragPieces.append([draggingColor,mouse_position,radius])
+
+            print("length of dragpieces is "+str(len(dragPieces)))
+            if(len(dragPieces)>1):
+                
+                dragPieces.pop(0)
+            #elif (drawing):
+               # pygame.draw.circle(myScreen, color, mouse_position, 10)
+
+
+    myScreen.fill(white)
     
 
     pygame.draw.rect(myScreen, color, pygame.Rect((0,0),(width,height)), 7)
@@ -275,10 +283,11 @@ while running:
         pygame.draw.circle(myScreen, color, piece[0], piece[1])
 
     for piece in whitepieces:
-         pygame.draw.circle(myScreen, (156, 153, 146), piece[0], piece[1])
-
+         pygame.draw.circle(myScreen, gray, piece[0], piece[1])
+    
     for piece in dragPieces:
          pygame.draw.circle(myScreen, piece[0], piece[1], piece[2])
+         
 
     myScreen.blit(roll1, (6.10*spacing1, height/2.75))
     myScreen.blit(roll2, (7.13*spacing1, height/2.75))
