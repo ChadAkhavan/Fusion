@@ -2,15 +2,30 @@ import sys, pygame
 import random
 
 pygame.init()
-
+#Variables
+white=255,255,255
+tri=[]
+pieces=[]
+blackpieces=[]
+whitepieces=[]
+color=0,0,0
+gray=156, 153, 146
+draggingColor=color
+mouse_position=(0,0)
+drawing=False
+dragging=False
+running=True
+dragPieces=[]
 width = 1500
 height = 1100
+radius=height/24
+diameter=height/12
+spacing1=width/14
+spacing2=height/6
+center=spacing1/2
 size = (width,height)
 myScreen=pygame.display.set_mode(size)
-
-
 rolledNums = []
-pygame.init()
 def diceroll():
     diceroll = random.randint(1,6)
     rolledNums.append(diceroll)
@@ -38,20 +53,6 @@ roll1 = diceroll()
 roll2 = diceroll()
 
 
-white=255,255,255
-tri=[]
-pieces=[]
-blackpieces=[]
-whitepieces=[]
-spacing1=width/14
-spacing2=height/6
-color=0,0,0
-gray=156, 153, 146
-draggingColor=color
-mouse_position=(0,0)
-drawing=False
-dragging=False
-dragPieces=[]
 
 def CircleClick(circle_x, circle_y, radius, mouse_x, mouse_y):
      
@@ -136,10 +137,6 @@ def drawTri():
                 end[1]-=spacing2
                 end[0]+=spacing1/2
 
-#def columb 
-radius=height/24
-diameter=height/12
-center=spacing1/2
 
 def drawBlackPieces():
    #Drawing far left black pieces
@@ -184,7 +181,7 @@ def drawBlackPieces():
         else:
              pieces.append(((spacing1/2,i*1.972*radius), radius))
         #pieces.append(((spacing1/2,i*2*radius), radius))'''
-running=True
+
 
 def drawWhitePieces():
     center= [spacing1/2,height-1.3*radius]
@@ -221,6 +218,25 @@ def drawWhitePieces():
     whitepieces.append([newCenter, radius])
     newY=height-1.3*radius-diameter*(3)
     newCenter=[width-spacing1/2,newY]
+
+def DrawEverything():
+    pygame.draw.rect(myScreen, color, pygame.Rect((0,0),(width,height)), 7)
+
+    for line in tri:
+        pygame.draw.line(myScreen,color,line[0], line[1], 3 )
+
+    for piece in blackpieces:
+        pygame.draw.circle(myScreen, color, piece[0], piece[1])
+
+    for piece in whitepieces:
+         pygame.draw.circle(myScreen, gray, piece[0], piece[1])
+    
+    for piece in dragPieces:
+         pygame.draw.circle(myScreen, piece[0], piece[1], piece[2])
+         
+
+    myScreen.blit(roll1, (6.10*spacing1, height/2.75))
+    myScreen.blit(roll2, (7.13*spacing1, height/2.75))
 drawBlackPieces()
 drawTri()
 drawWhitePieces()
@@ -234,17 +250,23 @@ while running:
         elif event.type==pygame.MOUSEBUTTONDOWN:
             dragPieces=[]
             mouse_x, mouse_y=pygame.mouse.get_pos()
+            pieceClicked=False
             for piece in blackpieces:
                  if CircleClick(piece[0][0],piece[0][1],piece[1],mouse_x,mouse_y):
                       dragging=True
                       draggingColor=color
                       blackpieces.remove(piece)
-            for piece in whitepieces:
-                 if CircleClick(piece[0][0],piece[0][1],piece[1],mouse_x,mouse_y):
-                    dragging=True
-                    draggingColor=gray
-                    whitepieces.remove(piece)
-
+                      dragPieces.append([draggingColor, piece[0], piece[1]])
+                      pieceClicked=True
+                      break
+            if(not pieceClicked):
+                for piece in whitepieces:
+                    if CircleClick(piece[0][0],piece[0][1],piece[1],mouse_x,mouse_y):
+                        dragging=True
+                        draggingColor=gray
+                        whitepieces.remove(piece)
+                        dragPieces.append([draggingColor, piece[0], piece[1]])
+                        break
         elif event.type==pygame.MOUSEBUTTONUP:
             #drawing=False
             dragging=False
@@ -274,23 +296,7 @@ while running:
     myScreen.fill(white)
     
 
-    pygame.draw.rect(myScreen, color, pygame.Rect((0,0),(width,height)), 7)
-
-    for line in tri:
-        pygame.draw.line(myScreen,color,line[0], line[1], 3 )
-
-    for piece in blackpieces:
-        pygame.draw.circle(myScreen, color, piece[0], piece[1])
-
-    for piece in whitepieces:
-         pygame.draw.circle(myScreen, gray, piece[0], piece[1])
-    
-    for piece in dragPieces:
-         pygame.draw.circle(myScreen, piece[0], piece[1], piece[2])
-         
-
-    myScreen.blit(roll1, (6.10*spacing1, height/2.75))
-    myScreen.blit(roll2, (7.13*spacing1, height/2.75))
+    DrawEverything()
 
     pygame.display.flip()
 pygame.quit()
