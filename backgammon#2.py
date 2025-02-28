@@ -26,6 +26,8 @@ center=spacing1/2
 size = (width,height)
 myScreen=pygame.display.set_mode(size)
 rolledNums = []
+Roll=pygame.image.load("diceroll.png")
+Roll=pygame.transform.scale(Roll,(200,200))
 def diceroll():
     diceroll = random.randint(1,6)
     rolledNums.append(diceroll)
@@ -237,12 +239,12 @@ def DrawEverything():
 
     myScreen.blit(roll1, (6.10*spacing1, height/2.75))
     myScreen.blit(roll2, (7.13*spacing1, height/2.75))
+    myScreen.blit(Roll, (649,649))
 drawBlackPieces()
 drawTri()
 drawWhitePieces()
 myScreen.fill(white)
 while running:
-    
     for event in pygame.event.get():
         if event.type==pygame.QUIT: 
             sys.exit()
