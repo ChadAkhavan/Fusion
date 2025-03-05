@@ -28,33 +28,42 @@ myScreen=pygame.display.set_mode(size)
 rolledNums = []
 Roll=pygame.image.load("diceroll.png")
 Roll=pygame.transform.scale(Roll,(200,200))
+rollRect = Roll.get_rect(topleft=(649,649))
+roll1=[pygame.image.load("dice1.png"),0]
+roll2=[pygame.image.load("dice1.png"),0]
+totalRoll=0
+
 def diceroll():
     diceroll = random.randint(1,6)
     rolledNums.append(diceroll)
 
     if (diceroll==1):
-        return pygame.image.load("dice1.png")
+        return [pygame.image.load("dice1.png"),1]
 
     if (diceroll==2):
-        return pygame.image.load("dice2.png")
+        return [pygame.image.load("dice2.png"),2]
 
     if (diceroll==3):
-        return pygame.image.load("dice3.png")
+        return [pygame.image.load("dice3.png"),3]
 
     if (diceroll==4):
-        return pygame.image.load("dice4.png")
+        return [pygame.image.load("dice4.png"),4]
 
     if (diceroll==5):
-        return pygame.image.load("dice5.png")
+        return [pygame.image.load("dice5.png"),5]
 
     if (diceroll==6):
-        return pygame.image.load("dice6.png")
+        return [pygame.image.load("dice6.png"),6]
 
-
-roll1 = diceroll()
-roll2 = diceroll()
-
-
+def reRoll():
+    global roll1
+    global roll2
+    global totalRoll
+    roll1 = diceroll()
+    roll2 = diceroll()
+    totalRoll=roll1[1]+roll2[1]
+    if roll1[1]==roll2[1]:
+        totalRoll*=2
 
 def CircleClick(circle_x, circle_y, radius, mouse_x, mouse_y):
      
@@ -237,12 +246,13 @@ def DrawEverything():
          pygame.draw.circle(myScreen, piece[0], piece[1], piece[2])
          
 
-    myScreen.blit(roll1, (6.10*spacing1, height/2.75))
-    myScreen.blit(roll2, (7.13*spacing1, height/2.75))
+    myScreen.blit(roll1[0], (6.10*spacing1, height/2.75))
+    myScreen.blit(roll2[0], (7.13*spacing1, height/2.75))
     myScreen.blit(Roll, (649,649))
 drawBlackPieces()
 drawTri()
 drawWhitePieces()
+reRoll()
 myScreen.fill(white)
 while running:
     for event in pygame.event.get():
@@ -253,6 +263,9 @@ while running:
             dragPieces=[]
             mouse_x, mouse_y=pygame.mouse.get_pos()
             pieceClicked=False
+            if rollRect.collidepoint(mouse_x,mouse_y):
+                reRoll()
+                print("totalRoll = "+str(totalRoll))
             for piece in blackpieces:
                  if CircleClick(piece[0][0],piece[0][1],piece[1],mouse_x,mouse_y):
                       dragging=True
@@ -287,7 +300,7 @@ while running:
             if (dragging):
                  dragPieces.append([draggingColor,mouse_position,radius])
 
-            print("length of dragpieces is "+str(len(dragPieces)))
+
             if(len(dragPieces)>1):
                 
                 dragPieces.pop(0)
