@@ -14,6 +14,7 @@ def CheckDragClick():
                 c.draggingColor=c.color
                 c.blackpieces.remove(piece)
                 c.dragPieces.append([c.draggingColor, piece[0], piece[1]])
+                c.intial_pos=[c.draggingColor, piece[0], piece[1]]
                 pieceClicked=True
                 break
     if(not pieceClicked):
@@ -24,7 +25,7 @@ def CheckDragClick():
                 c.whitepieces.remove(piece)
                 c.dragPieces.append([c.draggingColor, piece[0], piece[1]])
                 break
-
+                
 def CheckDragRelease():
     #drawing=False
     c.dragging=False
@@ -51,4 +52,4 @@ def CheckDragging():
         c.dragPieces.pop(0)
 
 def isValidMove(pos):
-    pass
+    return True

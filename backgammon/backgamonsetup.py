@@ -196,6 +196,27 @@ def drawWhitePieces():
     newY=c.height-1.3*c.radius-c.diameter*(3)
     newCenter=[c.width-c.spacing1/2,newY]
 
+def CreateSpaces():
+    y=c.height/2
+    x=c.width-c.spacing1
+    for i in range(6):
+        c.spaces.append(pygame.Rect(x,y,c.spacing1,c.height/2))
+        x-=c.spacing1
+
+    x=c.spacing1*5
+    for i in range(6):
+        c.spaces.append(pygame.Rect(x,y,c.spacing1,c.height/2))
+        x-=c.spacing1
+
+    x,y=0,0
+    for i in range(6):
+        c.spaces.append(pygame.Rect(x,y,c.spacing1,c.height/2))
+        x+=c.spacing1
+    
+    x=c.spacing1*8
+    for i in range(6):
+        c.spaces.append(pygame.Rect(x,y,c.spacing1,c.height/2))
+        x+=c.spacing1
 def DrawEverything():
     pygame.draw.rect(c.myScreen, c.color, pygame.Rect((0,0),(c.width,c.height)), 7)
 
@@ -211,7 +232,9 @@ def DrawEverything():
     for piece in c.dragPieces:
          pygame.draw.circle(c.myScreen, piece[0], piece[1], piece[2])
          
-
+    '''for rectangle in c.spaces:
+        pygame.draw.rect(c.myScreen, c.color,rectangle)'''
+    
     c.myScreen.blit(c.roll1[0], (6.10*c.spacing1, c.height/2.75))
     c.myScreen.blit(c.roll2[0], (7.13*c.spacing1, c.height/2.75))
     c.myScreen.blit(c.Roll, (649,649))

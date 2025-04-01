@@ -3,13 +3,14 @@ import backgamonsetup as b
 import configbackgamon as c
 import dragging as d
 
-pygame.init()
+#pygame.init()
 #Variables
 
 
 
 b.drawBlackPieces()
 b.drawTri()
+b.CreateSpaces()
 b.drawWhitePieces()
 b.reRoll()
 c.myScreen.fill(c.white)

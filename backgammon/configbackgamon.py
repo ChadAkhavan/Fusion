@@ -28,3 +28,6 @@ rollRect = Roll.get_rect(topleft=(649,649))
 roll1=[pygame.image.load("images/dice1.png"),0]
 roll2=[pygame.image.load("images/dice1.png"),0]
 totalRoll=0
+intial_pos=[]
+#These are the imagineary rectatgles that make up spaces on the board
+spaces=[]
