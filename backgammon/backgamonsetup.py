@@ -119,37 +119,37 @@ def drawBlackPieces():
    #Drawing far left black pieces
     diameter=2*c.radius
     center= [c.spacing1/2,1.3*c.radius]
-    c.blackpieces.append((center,c.radius))
+    c.blackpieces.append([center,c.radius,12])
     newY=1.3*c.radius+diameter
     newCenter= [c.spacing1/2,newY]
     for i in range(4):
-            c.blackpieces.append([newCenter, c.radius])
+            c.blackpieces.append([newCenter, c.radius,12])
             newY=1.3*c.radius+diameter*(i+2)
             newCenter=[c.spacing1/2,newY]
         #drawing middle left black pieces
     Center=[c.spacing1*4.5, c.height-1.3*c.radius]
-    c.blackpieces.append([Center, c.radius])
+    c.blackpieces.append([Center, c.radius,7])
     newY=c.height-1.3*c.radius-diameter
     newCenter=[c.spacing1*4.5,newY]
     for i in range(2):
-            c.blackpieces.append([newCenter,c.radius])
+            c.blackpieces.append([newCenter,c.radius,7])
             newY=c.height-1.3*c.radius-diameter*(i+2)
             newCenter=[c.spacing1*4.5,newY]
 #drawing middle right black pieces
     Center=[c.spacing1*8.5, c.height-1.3*c.radius]
-    c.blackpieces.append([Center, c.radius])
+    c.blackpieces.append([Center, c.radius,5])
     newY=c.height-1.3*c.radius-diameter
     newCenter=[c.spacing1*8.5,newY]
     for i in range(4):
-            c.blackpieces.append([newCenter,c.radius])
+            c.blackpieces.append([newCenter,c.radius,5])
             newY=c.height-1.3*c.radius-diameter*(i+2)
             newCenter=[c.spacing1*8.5,newY]
     #drawing far right pieces
     center= [c.width-c.spacing1/2,1.3*c.radius]
-    c.blackpieces.append((center,c.radius))
+    c.blackpieces.append((center,c.radius,23))
     newY=1.3*c.radius+diameter
     newCenter= [c.width-c.spacing1/2,newY]
-    c.blackpieces.append([newCenter, c.radius])
+    c.blackpieces.append([newCenter, c.radius,23])
     newY=1.3*c.radius+diameter*(3)
     newCenter=[c.width-c.spacing1/2,newY]
     '''for i in range (6):
@@ -162,37 +162,37 @@ def drawBlackPieces():
 
 def drawWhitePieces():
     center= [c.spacing1/2,c.height-1.3*c.radius]
-    c.whitepieces.append((center,c.radius))
+    c.whitepieces.append([center,c.radius,11])
     newY=c.height-1.3*c.radius-c.diameter
     newCenter= [c.spacing1/2,newY]
     for i in range(4):
-            c.whitepieces.append([newCenter, c.radius])
+            c.whitepieces.append([newCenter, c.radius,11])
             newY=c.height-1.3*c.radius-c.diameter*(i+2)
             newCenter=[c.spacing1/2,newY]
         #drawing middle left white pieces
     Center=[c.spacing1*4.5, 1.3*c.radius]
-    c.whitepieces.append([Center, c.radius])
+    c.whitepieces.append([Center, c.radius,16])
     newY=1.3*c.radius+c.diameter
     newCenter=[c.spacing1*4.5,newY]
     for i in range(2):
-            c.whitepieces.append([newCenter,c.radius])
+            c.whitepieces.append([newCenter,c.radius,16])
             newY=1.3*c.radius+c.diameter*(i+2)
             newCenter=[c.spacing1*4.5,newY]
 #drawing middle right white pieces
     Center=[c.spacing1*8.5, 1.3*c.radius]
-    c.whitepieces.append([Center, c.radius])
+    c.whitepieces.append([Center, c.radius,18])
     newY=1.3*c.radius+c.diameter
     newCenter=[c.spacing1*8.5,newY]
     for i in range(4):
-            c.whitepieces.append([newCenter,c.radius])
+            c.whitepieces.append([newCenter,c.radius,18])
             newY=1.3*c.radius+c.diameter*(i+2)
             newCenter=[c.spacing1*8.5,newY]
     #drawing far right white pieces
     center= [c.width-c.spacing1/2,c.height-1.3*c.radius]
-    c.whitepieces.append((center,c.radius))
+    c.whitepieces.append([center,c.radius,0])
     newY=c.height-1.3*c.radius-c.diameter
     newCenter= [c.width-c.spacing1/2,newY]
-    c.whitepieces.append([newCenter, c.radius])
+    c.whitepieces.append([newCenter, c.radius,0])
     newY=c.height-1.3*c.radius-c.diameter*(3)
     newCenter=[c.width-c.spacing1/2,newY]
 

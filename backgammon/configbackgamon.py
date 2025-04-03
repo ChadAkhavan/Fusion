@@ -1,7 +1,6 @@
 import sys, pygame
 white=255,255,255
 tri=[]
-pieces=[]
 blackpieces=[]
 whitepieces=[]
 color=0,0,0
