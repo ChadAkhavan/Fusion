@@ -146,7 +146,7 @@ def drawBlackPieces():
             newCenter=[c.spacing1*8.5,newY]
     #drawing far right pieces
     center= [c.width-c.spacing1/2,1.3*c.radius]
-    c.blackpieces.append((center,c.radius,23))
+    c.blackpieces.append([center,c.radius,23])
     newY=1.3*c.radius+diameter
     newCenter= [c.width-c.spacing1/2,newY]
     c.blackpieces.append([newCenter, c.radius,23])
