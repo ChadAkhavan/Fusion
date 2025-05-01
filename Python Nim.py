@@ -51,7 +51,7 @@ def drawlines():
 pygame.init()
 white=255,255,255
 color=(0,0,0)
-color2=(255,0,0)
+color2=(255,255,255)
 spacing= 175
 drawing=False
 hasdrawn=False

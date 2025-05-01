@@ -1,6 +1,7 @@
 import pygame, sys
 import configbackgamon as c
 import backgamonsetup as b
+import math
 
 def CheckDragClick():
     mouse_x, mouse_y=pygame.mouse.get_pos()
@@ -34,11 +35,14 @@ def CheckDragRelease():
     c.dragging=False
     if(len(c.dragPieces)>0):
         FinalPos=c.dragPieces.pop(0)
+        firstspace=getFirstSpot(FinalPos)
         print("the piece is being moved from"+str(FinalPos[3]))
-        NewSpace=isValidMove(FinalPos)
+        FinalSpot=findclosestspace(FinalPos,firstspace)
+        NewSpace=isValidMove(FinalSpot,FinalPos)
         if (NewSpace):
             print("valid move")
             if (FinalPos[0]==c.gray):
+                findclosestspace(FinalPos,NewSpace)
                 c.whitepieces.append([FinalPos[1],FinalPos[2],NewSpace])
             else:
                 c.blackpieces.append([FinalPos[1],FinalPos[2],NewSpace])
@@ -57,15 +61,20 @@ def CheckDragging():
     if(len(c.dragPieces)>1):
         
         c.dragPieces.pop(0)
-
-def isValidMove(pos):
+def getFirstSpot(pos):
     newSpot=None
     for space in c.spaces:
         if space.collidepoint(pos[1][0],pos[1][1]):
             print("the piece is being moved to"+str(c.spaces.index(space)))
             newSpot=c.spaces.index(space)
+            c.secondSpace=newSpot+1
             break
-        
+
+    if (newSpot==None):
+        return False
+    return newSpot
+
+def isValidMove(newSpot,pos):
     print("roll 1: "+str(c.roll1[1]))
     print("roll 2: "+str(c.roll2[1]))
     color=pos[0]
@@ -84,3 +93,15 @@ def isValidMove(pos):
             return newSpot
         else:
             return False
+def findclosestspace(piece,space):
+#takes the given piece and returns the space it is closest to
+    range=c.height/48
+    centerOfPiece= piece[1]
+    centerSpace1= c.spaces[space].center
+    centerspace2=c.spaces[c.secondSpace].center
+    if math.dist(centerOfPiece,centerSpace1)>math.dist(centerOfPiece,centerspace2):
+        print("closer to the lower piece")
+        return c.secondSpace
+    else:
+        print("closer ot the higher piece")
+        return space

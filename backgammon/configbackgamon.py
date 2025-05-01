@@ -32,3 +32,4 @@ totalRoll=0
 intial_pos=[]
 #These are the imagineary rectatgles that make up spaces on the board
 spaces=[]
+secondSpace=-1
