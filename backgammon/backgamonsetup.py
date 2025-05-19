@@ -30,6 +30,7 @@ def reRoll():
     c.totalRoll=c.roll1[1]+c.roll2[1]
     if c.roll1[1]==c.roll2[1]:
         c.totalRoll*=2
+    c.movesLeft = c.totalRoll
 
 def CircleClick(circle_x, circle_y, radius, mouse_x, mouse_y):
      

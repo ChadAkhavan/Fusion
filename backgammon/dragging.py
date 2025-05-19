@@ -35,19 +35,32 @@ def CheckDragRelease():
     c.dragging=False
     if(len(c.dragPieces)>0):
         FinalPos=c.dragPieces.pop(0)
-        firstspace=getFirstSpot(FinalPos)
+        if(c.movesLeft == 0):
+            print("NO MOVES LEFT")
+            if (FinalPos[0]==c.gray):
+                    c.whitepieces.append([c.intial_pos[1],c.intial_pos[2],c.intial_pos[3]])
+            else:
+                c.blackpieces.append([c.intial_pos[1],c.intial_pos[2],c.intial_pos[3]])
+            return
         print("the piece is being moved from"+str(FinalPos[3]))
-        FinalSpot=findclosestspace(FinalPos,firstspace)
+        #calc first closest space
+        FinalSpot=getFirstSpot(FinalPos)
+        #calc space the piece is closest to if touching 2, redefining final spot
+        if c.secondSpace != -1:
+            FinalSpot=findclosestspace(FinalPos,FinalSpot)
+        #find if that's a valid move
         NewSpace=isValidMove(FinalSpot,FinalPos)
+        print("The space you are moving to is : "+str(NewSpace))
         if (NewSpace):
             print("valid move")
+            NewSpaceX=c.spaces[NewSpace].center[0]
+            NewSpaceY=findY(NewSpace)
             if (FinalPos[0]==c.gray):
-                findclosestspace(FinalPos,NewSpace)
-                c.whitepieces.append([FinalPos[1],FinalPos[2],NewSpace])
+                c.whitepieces.append([[NewSpaceX, NewSpaceY],FinalPos[2],NewSpace])
             else:
-                c.blackpieces.append([FinalPos[1],FinalPos[2],NewSpace])
+                c.blackpieces.append([[NewSpaceX, NewSpaceY],FinalPos[2],NewSpace])
         else:
-            print("not avlid ")
+            print("not valid ")
             if (FinalPos[0]==c.gray):
                 c.whitepieces.append([c.intial_pos[1],c.intial_pos[2],c.intial_pos[3]])
             else:
@@ -61,12 +74,14 @@ def CheckDragging():
     if(len(c.dragPieces)>1):
         
         c.dragPieces.pop(0)
+
 def getFirstSpot(pos):
     newSpot=None
     for space in c.spaces:
-        if space.collidepoint(pos[1][0],pos[1][1]):
-            print("the piece is being moved to"+str(c.spaces.index(space)))
+        if space.collidepoint(pos[1]):
             newSpot=c.spaces.index(space)
+            print("the piece is being moved to (first spot the piece touches) "+str(newSpot))
+            print("the piece is being moved to (second spot the piece touches) "+str(newSpot+1))
             c.secondSpace=newSpot+1
             break
 
@@ -80,28 +95,48 @@ def isValidMove(newSpot,pos):
     color=pos[0]
     oldspot=pos[3]
     print("total roll = "+str(c.totalRoll))
+    print("moves left = "+str(c.movesLeft))
     
     if color==c.color:
-        print("newspot - oldspot = "+str((oldspot-newSpot)))
-        if ((oldspot-newSpot)==c.roll1[1]) or ((oldspot-newSpot)==c.roll2[1]) or ((oldspot-newSpot)==c.totalRoll):
-            print("ye")
+        print("oldspot - newSpot = "+str((oldspot-newSpot)))
+        if ((oldspot-newSpot)>0) and (oldspot-newSpot <= c.movesLeft) and (oldspot-newSpot== c.roll1[1] or oldspot-newSpot==c.roll2[1]):
+            c.movesLeft -= oldspot-newSpot
             return newSpot
     elif color==c.gray:
-        print("oldspot - newspot = "+str((newSpot-oldspot)))
-        if ((newSpot-oldspot)==c.roll1[1]) or ((newSpot-oldspot)==c.roll2[1]) or ((newSpot-oldspot)==c.totalRoll):
-            print("YES!")
+        print("newspot - oldspot = "+str((newSpot-oldspot)))
+        if ((newSpot-oldspot)>0) and (newSpot-oldspot <= c.movesLeft)and (newSpot-oldspot== c.roll1[1] or newSpot-oldspot==c.roll2[1]):
+            c.movesLeft -= newSpot-oldspot
             return newSpot
         else:
             return False
+        
 def findclosestspace(piece,space):
-#takes the given piece and returns the space it is closest to
+#takes the given piece and returns the space it is closest to, the first spot the piece is touching or the one after
     range=c.height/48
     centerOfPiece= piece[1]
     centerSpace1= c.spaces[space].center
-    centerspace2=c.spaces[c.secondSpace].center
-    if math.dist(centerOfPiece,centerSpace1)>math.dist(centerOfPiece,centerspace2):
-        print("closer to the lower piece")
-        return c.secondSpace
+    if(len(c.spaces)> c.secondSpace):
+        centerspace2=c.spaces[c.secondSpace].center
+        if math.dist(centerOfPiece,centerSpace1)>math.dist(centerOfPiece,centerspace2):
+            print("closer to the higher piece")
+            return c.secondSpace
+        else:
+            print("closer to the lower piece")
+            return space
+    return space
+
+def findY(space):
+    count=0
+    for piece in c.whitepieces:
+        if(piece[2]==space):
+            count+=1
+    for piece in c.blackpieces:
+        if(piece[2]==space):
+            count+=1
+
+    if (space <= 11):
+        return c.height-c.diameter*count+c.radius
+    elif (space>11):
+        return c.diameter*count+c.radius
     else:
-        print("closer ot the higher piece")
-        return space
+        return 0
