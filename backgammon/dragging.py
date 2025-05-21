@@ -99,16 +99,31 @@ def isValidMove(newSpot,pos):
     
     if color==c.color:
         print("oldspot - newSpot = "+str((oldspot-newSpot)))
-        if ((oldspot-newSpot)>0) and (oldspot-newSpot <= c.movesLeft) and (oldspot-newSpot== c.roll1[1] or oldspot-newSpot==c.roll2[1]):
+        wp=[]
+        for piece in c.whitepieces:
+            if piece[2] == newSpot:
+                wp.append(piece)
+        if len(wp)==1:
+            capture(wp[0],color)
+        if ((oldspot-newSpot)>0) and (oldspot-newSpot <= c.movesLeft) and (oldspot-newSpot== c.roll1[1] or oldspot-newSpot==c.roll2[1]) and len(wp)<2:
+        
             c.movesLeft -= oldspot-newSpot
             return newSpot
     elif color==c.gray:
         print("newspot - oldspot = "+str((newSpot-oldspot)))
-        if ((newSpot-oldspot)>0) and (newSpot-oldspot <= c.movesLeft)and (newSpot-oldspot== c.roll1[1] or newSpot-oldspot==c.roll2[1]):
+        bp=[]
+        for piece in c.blackpieces:
+            if piece[2] == newSpot:
+                bp.append(piece)
+                if len(bp)==1:
+                    capture(bp[0],color)
+        if ((newSpot-oldspot)>0) and (newSpot-oldspot <= c.movesLeft)and (newSpot-oldspot== c.roll1[1] or newSpot-oldspot==c.roll2[1]) and len(bp)<2:
             c.movesLeft -= newSpot-oldspot
             return newSpot
         else:
             return False
+    else:
+        return False
         
 def findclosestspace(piece,space):
 #takes the given piece and returns the space it is closest to, the first spot the piece is touching or the one after
@@ -135,8 +150,14 @@ def findY(space):
             count+=1
 
     if (space <= 11):
-        return c.height-c.diameter*count+c.radius
+        return c.height-c.diameter*count-c.radius
     elif (space>11):
         return c.diameter*count+c.radius
     else:
         return 0
+    
+def capture(piece,color):
+    if color==c.color:
+        c. whitepieces.remove(piece)
+    elif color==c.gray:
+        c.blackpieces.remove(piece)
