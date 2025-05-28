@@ -51,7 +51,7 @@ def CheckDragRelease():
         #find if that's a valid move
         NewSpace=isValidMove(FinalSpot,FinalPos)
         print("The space you are moving to is : "+str(NewSpace))
-        if (NewSpace):
+        if (NewSpace>=0):
             print("valid move")
             NewSpaceX=c.spaces[NewSpace].center[0]
             NewSpaceY=findY(NewSpace)
@@ -103,27 +103,28 @@ def isValidMove(newSpot,pos):
         for piece in c.whitepieces:
             if piece[2] == newSpot:
                 wp.append(piece)
-        if len(wp)==1:
-            capture(wp[0],color)
-        if ((oldspot-newSpot)>0) and (oldspot-newSpot <= c.movesLeft) and (oldspot-newSpot== c.roll1[1] or oldspot-newSpot==c.roll2[1]) and len(wp)<2:
-        
+        if ((oldspot-newSpot)>0) and (oldspot-newSpot <= c.movesLeft) and (oldspot-newSpot== c.roll1[1] or oldspot-newSpot==c.roll2[1] and len(wp)<2):
             c.movesLeft -= oldspot-newSpot
+            if len(wp)==1:
+                capture(wp[0],color)
             return newSpot
+        else:
+            return -1
     elif color==c.gray:
         print("newspot - oldspot = "+str((newSpot-oldspot)))
         bp=[]
         for piece in c.blackpieces:
             if piece[2] == newSpot:
                 bp.append(piece)
-                if len(bp)==1:
-                    capture(bp[0],color)
-        if ((newSpot-oldspot)>0) and (newSpot-oldspot <= c.movesLeft)and (newSpot-oldspot== c.roll1[1] or newSpot-oldspot==c.roll2[1]) and len(bp)<2:
+        if ((newSpot-oldspot)>0) and (newSpot-oldspot <= c.movesLeft)and (newSpot-oldspot== c.roll1[1] or newSpot-oldspot==c.roll2[1] and len(bp)<2):
             c.movesLeft -= newSpot-oldspot
+            if len(bp)==1:
+                capture(bp[0],color)
             return newSpot
         else:
-            return False
+            return -1
     else:
-        return False
+        return -1
         
 def findclosestspace(piece,space):
 #takes the given piece and returns the space it is closest to, the first spot the piece is touching or the one after
