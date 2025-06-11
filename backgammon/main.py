@@ -5,7 +5,7 @@ import dragging as d
 
 #pygame.init()
 #Variables
-
+pygame.font.init()
 
 
 b.drawBlackPieces()

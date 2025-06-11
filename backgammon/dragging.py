@@ -103,12 +103,17 @@ def isValidMove(newSpot,pos):
         for piece in c.whitepieces:
             if piece[2] == newSpot:
                 wp.append(piece)
-        if ((oldspot-newSpot)>0) and (oldspot-newSpot <= c.movesLeft) and (oldspot-newSpot== c.roll1[1] or oldspot-newSpot==c.roll2[1] and len(wp)<2):
+        print("there are "+str(len(wp))+" white pieces already there")
+        if ((oldspot-newSpot)>0) and (oldspot-newSpot <= c.movesLeft) and (oldspot-newSpot== c.roll1[1] or oldspot-newSpot==c.roll2[1]) and (len(wp)<2) and (len(c.blackdeadrectangles)==0):
             c.movesLeft -= oldspot-newSpot
             if len(wp)==1:
                 capture(wp[0],color)
             return newSpot
         else:
+            if (len(c.blackdeadrectangles) !=0):
+                font= pygame.font.Font(None,32)
+                Text=font.render('Dead Piece', True, (255,255,255), (0,0,0))
+                c.alerts.append(Text)
             return -1
     elif color==c.gray:
         print("newspot - oldspot = "+str((newSpot-oldspot)))
@@ -116,12 +121,17 @@ def isValidMove(newSpot,pos):
         for piece in c.blackpieces:
             if piece[2] == newSpot:
                 bp.append(piece)
-        if ((newSpot-oldspot)>0) and (newSpot-oldspot <= c.movesLeft)and (newSpot-oldspot== c.roll1[1] or newSpot-oldspot==c.roll2[1] and len(bp)<2):
+        print("there are "+str(len(bp))+" black pieces already there")
+        if ((newSpot-oldspot)>0) and (newSpot-oldspot <= c.movesLeft)and (newSpot-oldspot== c.roll1[1] or newSpot-oldspot==c.roll2[1]) and (len(bp)<2) and (len(c.whitedeadrectangles)==0):
             c.movesLeft -= newSpot-oldspot
             if len(bp)==1:
                 capture(bp[0],color)
             return newSpot
         else:
+            if (len(c.whitedeadrectangles) !=0):
+                font= pygame.font.Font(None,32)
+                Text=font.render('Dead Piece', True, (255,255,255), (0,0,0))
+                c.alerts.append(Text)
             return -1
     else:
         return -1
@@ -160,5 +170,7 @@ def findY(space):
 def capture(piece,color):
     if color==c.color:
         c. whitepieces.remove(piece)
+        c.deadpieces.append((piece,c.gray))
     elif color==c.gray:
         c.blackpieces.remove(piece)
+        c.deadpieces.append((piece,c.color))
