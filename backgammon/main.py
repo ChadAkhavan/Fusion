@@ -5,7 +5,7 @@ import dragging as d
 
 #pygame.init()
 #Variables
-
+pygame.font.init()
 
 
 b.drawBlackPieces()
@@ -13,6 +13,7 @@ b.drawTri()
 b.CreateSpaces()
 b.drawWhitePieces()
 b.reRoll()
+b.checkTurn()
 c.myScreen.fill(c.white)
 
 while c.running:
