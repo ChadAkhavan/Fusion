@@ -25,12 +25,34 @@ def diceroll():
         return [pygame.image.load("images/dice6.png"),6]
 
 def reRoll():
+    if c.movesLeft==0:
+        print("No moves left switching turns")
+        if(c.whiteTurn):
+            c.whiteTurn=False
+            c.blackTurn=True
+        elif(c.blackTurn):
+            c.whiteTurn=True
+            c.blackTurn=False
     c.roll1 = diceroll()
     c.roll2 = diceroll()
     c.totalRoll=c.roll1[1]+c.roll2[1]
     if c.roll1[1]==c.roll2[1]:
         c.totalRoll*=2
     c.movesLeft = c.totalRoll
+    
+def checkTurn():
+    if c.roll1[1]>c.roll2[1]:
+        c.blackTurn=True
+        print("its blacks turn")
+        return c.blackTurn
+    elif c.roll2[1]>c.roll1[1]:
+        c.whiteTurn=True
+        print("its White turn")
+        return c.whiteTurn
+    else:
+        reRoll()
+        checkTurn()
+
 
 def CircleClick(circle_x, circle_y, radius, mouse_x, mouse_y):
      
