@@ -30,9 +30,17 @@ def reRoll():
         if(c.whiteTurn):
             c.whiteTurn=False
             c.blackTurn=True
+            font= pygame.font.Font(None,32)
+            alert_text='black\'s turn'
+            Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+            c.alerts.append([Text,alert_text])
         elif(c.blackTurn):
             c.whiteTurn=True
             c.blackTurn=False
+            font= pygame.font.Font(None,32)
+            alert_text='white\'s turn'
+            Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+            c.alerts.append([Text,alert_text])
     c.roll1 = diceroll()
     c.roll2 = diceroll()
     c.totalRoll=c.roll1[1]+c.roll2[1]
@@ -43,11 +51,17 @@ def reRoll():
 def checkTurn():
     if c.roll1[1]>c.roll2[1]:
         c.blackTurn=True
-        print("its blacks turn")
+        font= pygame.font.Font(None,32)
+        alert_text='black\'s turn'
+        Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+        c.alerts.append([Text,alert_text])
         return c.blackTurn
     elif c.roll2[1]>c.roll1[1]:
         c.whiteTurn=True
-        print("its White turn")
+        font= pygame.font.Font(None,32)
+        alert_text='white\'s turn'
+        Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+        c.alerts.append([Text,alert_text])
         return c.whiteTurn
     else:
         reRoll()
@@ -263,7 +277,14 @@ def DrawEverything():
         pygame.draw.rect(c.myScreen,rect[1],rect[0])
 
     for alert in c.alerts:
-        c.myScreen.blit(alert,alert.get_rect())
+        alert_rect=alert[0].get_rect()
+        if alert[1]=='dead piece':
+            alert_rect.center=(100,40)
+
+        if alert[1]=='black\'s turn' or alert[1]=='white\'s turn':
+            alert_rect.center=(c.width-100,40)
+        #alert_rect.center=(c.width//2, c.height//2)
+        c.myScreen.blit(alert[0],alert_rect)
     
     c.myScreen.blit(c.roll1[0], (6.10*c.spacing1, c.height/2.75))
     c.myScreen.blit(c.roll2[0], (7.13*c.spacing1, c.height/2.75))

@@ -30,9 +30,9 @@ def CheckDragClick():
                 c.intial_pos=[c.draggingColor, piece[0], piece[1], piece[2]]
                 break
     if c.whitedeadpiece:
-        pass
+        for rectangles in c.whitedeadrectangles:
     if c.Blackdeadpiece:
-        pass
+        for rectangles in c.blackdeadrectangles:
 def CheckDragRelease():
     #drawing=False
     c.dragging=False
@@ -115,8 +115,9 @@ def isValidMove(newSpot,pos):
         else:
             if (len(c.blackdeadrectangles) !=0):
                 font= pygame.font.Font(None,32)
-                Text=font.render('Dead Piece', True, (255,255,255), (0,0,0))
-                c.alerts.append(Text)
+                alert_text='dead piece'
+                Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+                c.alerts.append([Text,alert_text])
             return -1
     elif color==c.gray and c.whiteTurn:
         #print("newspot - oldspot = "+str((newSpot-oldspot)))
@@ -133,12 +134,13 @@ def isValidMove(newSpot,pos):
         else:
             if (len(c.whitedeadrectangles) !=0):
                 font= pygame.font.Font(None,32)
-                Text=font.render('Dead Piece', True, (255,255,255), (0,0,0))
-                c.alerts.append(Text)
+                alert_text='dead piece'
+                Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+                c.alerts.append([Text,alert_text])
                 c.whitedeadpiece=True
             return -1
     else:
-        print("Not Valid, c.blackturn="+str(c.blackTurn)+"and c.whiteTurn"+str(c.whiteTurn))
+        print("No Valid moves left")
         return -1
         
 def findclosestspace(piece,space):
