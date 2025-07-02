@@ -29,10 +29,7 @@ def CheckDragClick():
                 c.dragPieces.append([c.draggingColor, piece[0], piece[1],piece[2]])
                 c.intial_pos=[c.draggingColor, piece[0], piece[1], piece[2]]
                 break
-    if c.whitedeadpiece:
-        for rectangles in c.whitedeadrectangles:
-    if c.Blackdeadpiece:
-        for rectangles in c.blackdeadrectangles:
+
 def CheckDragRelease():
     #drawing=False
     c.dragging=False
@@ -113,11 +110,7 @@ def isValidMove(newSpot,pos):
                 capture(wp[0],color)
             return newSpot
         else:
-            if (len(c.blackdeadrectangles) !=0):
-                font= pygame.font.Font(None,32)
-                alert_text='dead piece'
-                Text=font.render(alert_text, True, (255,255,255), (0,0,0))
-                c.alerts.append([Text,alert_text])
+            
             return -1
     elif color==c.gray and c.whiteTurn:
         #print("newspot - oldspot = "+str((newSpot-oldspot)))
@@ -132,12 +125,7 @@ def isValidMove(newSpot,pos):
                 capture(bp[0],color)
             return newSpot
         else:
-            if (len(c.whitedeadrectangles) !=0):
-                font= pygame.font.Font(None,32)
-                alert_text='dead piece'
-                Text=font.render(alert_text, True, (255,255,255), (0,0,0))
-                c.alerts.append([Text,alert_text])
-                c.whitedeadpiece=True
+            
             return -1
     else:
         print("No Valid moves left")
@@ -181,3 +169,22 @@ def capture(piece,color):
     elif color==c.gray:
         c.blackpieces.remove(piece)
         c.deadpieces.append((piece,c.color))
+
+def checkForResummon():
+    if c.whitedeadpiece and c.whiteTurn:
+        font= pygame.font.Font(None,32)
+        alert_text='clicked space to resummon'
+        Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+        c.alerts.append([Text,alert_text])
+        for space in c.spaces:
+            if space.collidepoint(pygame.mouse.get_pos()) and c.spaces.index(space)<6 and (c.roll1==c.spaces.index(space) or c.roll2==c.spaces.index(space)):
+                newspace=(c.spaces.index(space))
+                center=(space.x,findY(newspace))
+                c.whitepieces.append(center,c.radius,newspace)
+    if c.Blackdeadpiece and c.blackTurn:
+        font= pygame.font.Font(None,32)
+        alert_text='clicked space to resummon'
+        Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+        for space in c.spaces:
+            if space.collidepoint(pygame.mouse.get_pos()) and c.spaces.index(space)>17:
+                pass

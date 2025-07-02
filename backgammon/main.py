@@ -29,6 +29,8 @@ while c.running:
         elif event.type==pygame.MOUSEMOTION:
             d.CheckDragging()
 
+    d.checkForResummon()
+
 
     c.myScreen.fill(c.white)
     
