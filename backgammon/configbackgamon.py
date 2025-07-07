@@ -38,7 +38,5 @@ spaces=[]
 secondSpace=-1
 movesLeft=totalRoll
 alerts=[]
-whitedeadpiece=False
-Blackdeadpiece=False
 whiteTurn=False
 blackTurn=False

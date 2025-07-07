@@ -30,6 +30,21 @@ def CheckDragClick():
                 c.intial_pos=[c.draggingColor, piece[0], piece[1], piece[2]]
                 break
 
+    if(len(c.whitedeadrectangles)>0 and c.whiteTurn):
+        print("listening for resommon click")
+        for space in c.spaces:
+            if space.collidepoint(pygame.mouse.get_pos())and c.spaces.index(space)<6 and c.spaces.index(space)<6 and (c.roll1[1]==c.spaces.index(space)+1 or c.roll2[1]==c.spaces.index(space)+1):
+                newspace=(c.spaces.index(space))
+                center=(space.x+c.spacing1/2,findY(newspace))
+                
+                print("The new piece should be at center"+str(center))
+                c.whitepieces.append([center,c.radius,newspace])
+                c.whitedeadrectangles.pop()
+                break
+
+    if(len(c.blackdeadrectangles)>0 and c.blackTurn):
+        print("listening for resommon click")
+
 def CheckDragRelease():
     #drawing=False
     c.dragging=False
@@ -171,17 +186,12 @@ def capture(piece,color):
         c.deadpieces.append((piece,c.color))
 
 def checkForResummon():
-    if c.whitedeadpiece and c.whiteTurn:
+    if len(c.whitedeadrectangles)>0 and c.whiteTurn:
         font= pygame.font.Font(None,32)
         alert_text='clicked space to resummon'
         Text=font.render(alert_text, True, (255,255,255), (0,0,0))
         c.alerts.append([Text,alert_text])
-        for space in c.spaces:
-            if space.collidepoint(pygame.mouse.get_pos()) and c.spaces.index(space)<6 and (c.roll1==c.spaces.index(space) or c.roll2==c.spaces.index(space)):
-                newspace=(c.spaces.index(space))
-                center=(space.x,findY(newspace))
-                c.whitepieces.append(center,c.radius,newspace)
-    if c.Blackdeadpiece and c.blackTurn:
+    if len(c.blackdeadrectangles)>0 and c.blackTurn:
         font= pygame.font.Font(None,32)
         alert_text='clicked space to resummon'
         Text=font.render(alert_text, True, (255,255,255), (0,0,0))

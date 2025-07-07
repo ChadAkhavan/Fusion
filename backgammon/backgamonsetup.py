@@ -48,14 +48,12 @@ def reRoll():
         c.totalRoll*=2
     c.movesLeft = c.totalRoll
     if (len(c.whitedeadrectangles) !=0):
-        c.whitedeadpiece=True
         font= pygame.font.Font(None,32)
         alert_text='dead piece'
         Text=font.render(alert_text, True, (255,255,255), (0,0,0))
         c.alerts.append([Text,alert_text])
         c.whitedeadpiece=True
     if (len(c.blackdeadrectangles) !=0):
-        c.Blackdeadpiece=True
         font= pygame.font.Font(None,32)
         alert_text='dead piece'
         Text=font.render(alert_text, True, (255,255,255), (0,0,0))
