@@ -280,11 +280,11 @@ def DrawEverything():
          pygame.draw.circle(c.myScreen, piece[0], piece[1], piece[2])
     DrawDeadPieces()
     for rect in c.whitedeadrectangles:
-        pygame.draw.rect(c.myScreen,rect[1],rect[0])
+        pygame.draw.rect(c.myScreen,c.gray,rect[0])
     '''for rectangle in c.spaces:
         pygame.draw.rect(c.myScreen, c.color,rectangle)'''
     for rect in c.blackdeadrectangles:
-        pygame.draw.rect(c.myScreen,rect[1],rect[0])
+        pygame.draw.rect(c.myScreen,c.color,rect[0])
 
     for alert in c.alerts:
         alert_rect=alert[0].get_rect()
@@ -309,14 +309,12 @@ def DrawDeadPieces():
     width=c.spacing1/2
     hieght=20
     c.whitedeadrectangles=[]
-    for piece in c.deadpieces:
-        if piece[1]==c.gray:
-            c.whitedeadrectangles.append((pygame.Rect(Wleft,ctop,width,hieght),piece[1]))
-            ctop +=30
+    for piece in c.whitedeadpieces:
+        c.whitedeadrectangles.append((pygame.Rect(Wleft,ctop,width,hieght),piece))
+        ctop +=30
 
     Bleft=Wleft+width
     c.blackdeadrectangles=[]
-    for piece in c.deadpieces:
-         if piece[1]==c.color:
-            c.blackdeadrectangles.append((pygame.Rect(Bleft,btop,width,hieght),piece[1]))
-            btop+=30
+    for piece in c.blackdeadpieces:
+        c.blackdeadrectangles.append((pygame.Rect(Bleft,btop,width,hieght),piece))
+        btop+=30
