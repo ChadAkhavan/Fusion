@@ -6,7 +6,7 @@ import math
 def CheckDragClick():
     #checking for resummon
     if(len(c.whitedeadrectangles)>0 and c.whiteTurn):
-        c.isResummoning=True
+        c.isResummoningW=True
         print("listening for resommon click")
         for space in c.spaces:
             if space.collidepoint(pygame.mouse.get_pos())and c.spaces.index(space)<6 and c.spaces.index(space)<6 and (c.roll1[1]==c.spaces.index(space)+1 or c.roll2[1]==c.spaces.index(space)+1):
@@ -18,8 +18,16 @@ def CheckDragClick():
                 c.whitedeadpieces.pop()
                 break
     elif(len(c.blackdeadrectangles)>0 and c.blackTurn):
-        c.isResummoning=True
+        c.isResummoningB=True
         print("listening for resommon click")
+        for space in c.spaces:
+            if space.collidepoint(pygame.mouse.get_pos())and c.spaces.index(space)>17 and (25-c.roll1[1]==c.spaces.index(space)+1 or 25-c.roll2[1]==c.spaces.index(space)+1):
+                c.resummonSpot=c.spaces.index(space)
+                center=(space.x+c.spacing1/2,findY(c.resummonSpot))
+                print("The new piece should be at center"+str(center))
+                c.blackpieces.append([center,c.radius,c.resummonSpot])
+                c.blackdeadpieces.pop()
+                break
         #if not resummon(Normal move)
     else:
         mouse_x, mouse_y=pygame.mouse.get_pos()
@@ -51,7 +59,7 @@ def CheckDragClick():
 
 
 def CheckDragRelease():
-    if c.isResummoning:
+    if c.isResummoningW:
         #add capturing
         bp=[]
         for piece in c.blackpieces:
@@ -59,7 +67,15 @@ def CheckDragRelease():
                 bp.append(piece)
         if len(bp)==1:
                 capture(bp[0],c.gray)
-        c.isResummoning=False
+        c.isResummoningW=False
+    elif c.isResummoningB:
+        wp=[]
+        for piece in c.whitepieces:
+            if piece[2] == c.resummonSpot:
+                wp.append(piece)
+        if len(wp)==1:
+                capture(wp[0],c.color)
+        c.isResummoningB=False
     else:
     #drawing=False
         c.dragging=False

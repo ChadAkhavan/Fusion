@@ -41,5 +41,6 @@ movesLeft=totalRoll
 alerts=[]
 whiteTurn=False
 blackTurn=False
-isResummoning=False
+isResummoningW=False
+isResummoningB=False
 resummonSpot=-1
