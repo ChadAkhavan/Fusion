@@ -41,23 +41,23 @@ def reRoll():
             alert_text='white\'s turn'
             Text=font.render(alert_text, True, (255,255,255), (0,0,0))
             c.alerts.append([Text,alert_text])
-    c.roll1 = diceroll()
-    c.roll2 = diceroll()
-    c.totalRoll=c.roll1[1]+c.roll2[1]
-    if c.roll1[1]==c.roll2[1]:
-        c.totalRoll*=2
-    c.movesLeft = c.totalRoll
-    if (len(c.whitedeadrectangles) !=0):
-        font= pygame.font.Font(None,32)
-        alert_text='dead piece'
-        Text=font.render(alert_text, True, (255,255,255), (0,0,0))
-        c.alerts.append([Text,alert_text])
-        c.whitedeadpiece=True
-    if (len(c.blackdeadrectangles) !=0):
-        font= pygame.font.Font(None,32)
-        alert_text='dead piece'
-        Text=font.render(alert_text, True, (255,255,255), (0,0,0))
-        c.alerts.append([Text,alert_text])
+        c.roll1 = diceroll()
+        c.roll2 = diceroll()
+        c.totalRoll=c.roll1[1]+c.roll2[1]
+        if c.roll1[1]==c.roll2[1]:
+            c.totalRoll*=2
+        c.movesLeft = c.totalRoll
+        if (len(c.whitedeadrectangles) !=0):
+            font= pygame.font.Font(None,32)
+            alert_text='dead piece'
+            Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+            c.alerts.append([Text,alert_text])
+            c.whitedeadpiece=True
+        if (len(c.blackdeadrectangles) !=0):
+            font= pygame.font.Font(None,32)
+            alert_text='dead piece'
+            Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+            c.alerts.append([Text,alert_text])
 def checkTurn():
     if c.roll1[1]>c.roll2[1]:
         c.blackTurn=True
@@ -74,7 +74,12 @@ def checkTurn():
         c.alerts.append([Text,alert_text])
         return c.whiteTurn
     else:
-        reRoll()
+        c.roll1 = diceroll()
+        c.roll2 = diceroll()
+        c.totalRoll=c.roll1[1]+c.roll2[1]
+        if c.roll1[1]==c.roll2[1]:
+            c.totalRoll*=2
+        c.movesLeft = c.totalRoll
         checkTurn()
 
 

@@ -11,11 +11,6 @@ def CheckDragClick():
         for space in c.spaces:
             if space.collidepoint(pygame.mouse.get_pos())and c.spaces.index(space)<6 and c.spaces.index(space)<6 and (c.roll1[1]==c.spaces.index(space)+1 or c.roll2[1]==c.spaces.index(space)+1):
                 c.resummonSpot=c.spaces.index(space)
-                center=(space.x+c.spacing1/2,findY(c.resummonSpot))
-                
-                print("The new piece should be at center"+str(center))
-                c.whitepieces.append([center,c.radius,c.resummonSpot])
-                c.whitedeadpieces.pop()
                 break
     elif(len(c.blackdeadrectangles)>0 and c.blackTurn):
         c.isResummoningB=True
@@ -23,8 +18,7 @@ def CheckDragClick():
         for space in c.spaces:
             if space.collidepoint(pygame.mouse.get_pos())and c.spaces.index(space)>17 and (25-c.roll1[1]==c.spaces.index(space)+1 or 25-c.roll2[1]==c.spaces.index(space)+1):
                 c.resummonSpot=c.spaces.index(space)
-                center=(space.x+c.spacing1/2,findY(c.resummonSpot))
-                print("The new piece should be at center"+str(center))
+                center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
                 c.blackpieces.append([center,c.radius,c.resummonSpot])
                 c.blackdeadpieces.pop()
                 break
@@ -66,23 +60,48 @@ def CheckDragRelease():
             if piece[2] == c.resummonSpot:
                 bp.append(piece)
         if len(bp)==1:
-                capture(bp[0],c.gray)
-        c.isResummoningW=False
+            capture(bp[0],c.gray)
+            center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
+            c.whitepieces.append([center,c.radius,c.resummonSpot])
+            c.whitedeadpieces.pop()
+            c.movesLeft-=c.resummonSpot-1
+            c.isResummoningW=False
+        elif len(bp)>1:
+            return
+        else:
+            #dont allow other color to sommun if more than 2 pieces of opposite color
+            center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
+            c.whitepieces.append([center,c.radius,c.resummonSpot])
+            c.whitedeadpieces.pop()
+            c.movesLeft-=c.resummonSpot-1
+            c.isResummoningW=False
     elif c.isResummoningB:
         wp=[]
         for piece in c.whitepieces:
             if piece[2] == c.resummonSpot:
                 wp.append(piece)
         if len(wp)==1:
-                capture(wp[0],c.color)
-        c.isResummoningB=False
+            capture(wp[0],c.color)
+            center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
+            c.blackpieces.append([center,c.radius,c.resummonSpot])
+            c.blackdeadpieces.pop()
+            c.movesLeft-=c.resummonSpot-1
+            c.isResummoningB=False
+        elif len(wp)>1:
+            return
+        else:
+            center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
+            c.blackpieces.append([center,c.radius,c.resummonSpot])
+            c.blackdeadpieces.pop()
+            c.movesLeft -= 25-c.resummonSpot-1
+            c.isResummoningB=False
     else:
     #drawing=False
         c.dragging=False
         if(len(c.dragPieces)>0):
             FinalPos=c.dragPieces.pop(0)
             if(c.movesLeft == 0):
-                print("NO MOVES LEFT")
+                #print("NO MOVES LEFT")
                 if (FinalPos[0]==c.gray):
                         c.whitepieces.append([c.intial_pos[1],c.intial_pos[2],c.intial_pos[3]])
                 else:

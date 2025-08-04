@@ -10,6 +10,7 @@ pygame.font.init()
 
 b.drawBlackPieces()
 b.drawTri()
+
 b.CreateSpaces()
 b.drawWhitePieces()
 b.reRoll()
