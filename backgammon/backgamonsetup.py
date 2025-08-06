@@ -30,27 +30,56 @@ def reRoll():
         if(c.whiteTurn):
             c.whiteTurn=False
             c.blackTurn=True
+            font= pygame.font.Font(None,32)
+            alert_text='black\'s turn'
+            Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+            c.alerts.append([Text,alert_text])
         elif(c.blackTurn):
             c.whiteTurn=True
             c.blackTurn=False
-    c.roll1 = diceroll()
-    c.roll2 = diceroll()
-    c.totalRoll=c.roll1[1]+c.roll2[1]
-    if c.roll1[1]==c.roll2[1]:
-        c.totalRoll*=2
-    c.movesLeft = c.totalRoll
-    
+            font= pygame.font.Font(None,32)
+            alert_text='white\'s turn'
+            Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+            c.alerts.append([Text,alert_text])
+        c.roll1 = diceroll()
+        c.roll2 = diceroll()
+        c.totalRoll=c.roll1[1]+c.roll2[1]
+        if c.roll1[1]==c.roll2[1]:
+            c.totalRoll*=2
+        c.movesLeft = c.totalRoll
+        if (len(c.whitedeadrectangles) !=0):
+            font= pygame.font.Font(None,32)
+            alert_text='dead piece'
+            Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+            c.alerts.append([Text,alert_text])
+            c.whitedeadpiece=True
+        if (len(c.blackdeadrectangles) !=0):
+            font= pygame.font.Font(None,32)
+            alert_text='dead piece'
+            Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+            c.alerts.append([Text,alert_text])
 def checkTurn():
     if c.roll1[1]>c.roll2[1]:
         c.blackTurn=True
-        print("its blacks turn")
+        font= pygame.font.Font(None,32)
+        alert_text='black\'s turn'
+        Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+        c.alerts.append([Text,alert_text])
         return c.blackTurn
     elif c.roll2[1]>c.roll1[1]:
         c.whiteTurn=True
-        print("its White turn")
+        font= pygame.font.Font(None,32)
+        alert_text='white\'s turn'
+        Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+        c.alerts.append([Text,alert_text])
         return c.whiteTurn
     else:
-        reRoll()
+        c.roll1 = diceroll()
+        c.roll2 = diceroll()
+        c.totalRoll=c.roll1[1]+c.roll2[1]
+        if c.roll1[1]==c.roll2[1]:
+            c.totalRoll*=2
+        c.movesLeft = c.totalRoll
         checkTurn()
 
 
@@ -256,14 +285,23 @@ def DrawEverything():
          pygame.draw.circle(c.myScreen, piece[0], piece[1], piece[2])
     DrawDeadPieces()
     for rect in c.whitedeadrectangles:
-        pygame.draw.rect(c.myScreen,rect[1],rect[0])
+        pygame.draw.rect(c.myScreen,c.gray,rect[0])
     '''for rectangle in c.spaces:
         pygame.draw.rect(c.myScreen, c.color,rectangle)'''
     for rect in c.blackdeadrectangles:
-        pygame.draw.rect(c.myScreen,rect[1],rect[0])
+        pygame.draw.rect(c.myScreen,c.color,rect[0])
 
     for alert in c.alerts:
-        c.myScreen.blit(alert,alert.get_rect())
+        alert_rect=alert[0].get_rect()
+        if alert[1]=='dead piece':
+            alert_rect.center=(100,40)
+
+        if alert[1]=='black\'s turn' or alert[1]=='white\'s turn':
+            alert_rect.center=(c.width-100,40)
+        #alert_rect.center=(c.width//2, c.height//2)
+        if alert[1]=='clicked space to resummon':
+            alert_rect.center=(c.width/2,c.height/2)
+        c.myScreen.blit(alert[0],alert_rect)
     
     c.myScreen.blit(c.roll1[0], (6.10*c.spacing1, c.height/2.75))
     c.myScreen.blit(c.roll2[0], (7.13*c.spacing1, c.height/2.75))
@@ -276,14 +314,12 @@ def DrawDeadPieces():
     width=c.spacing1/2
     hieght=20
     c.whitedeadrectangles=[]
-    for piece in c.deadpieces:
-        if piece[1]==c.gray:
-            c.whitedeadrectangles.append((pygame.Rect(Wleft,ctop,width,hieght),piece[1]))
-            ctop +=30
+    for piece in c.whitedeadpieces:
+        c.whitedeadrectangles.append((pygame.Rect(Wleft,ctop,width,hieght),piece))
+        ctop +=30
 
     Bleft=Wleft+width
     c.blackdeadrectangles=[]
-    for piece in c.deadpieces:
-         if piece[1]==c.color:
-            c.blackdeadrectangles.append((pygame.Rect(Bleft,btop,width,hieght),piece[1]))
-            btop+=30
+    for piece in c.blackdeadpieces:
+        c.blackdeadrectangles.append((pygame.Rect(Bleft,btop,width,hieght),piece))
+        btop+=30

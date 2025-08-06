@@ -10,6 +10,7 @@ pygame.font.init()
 
 b.drawBlackPieces()
 b.drawTri()
+
 b.CreateSpaces()
 b.drawWhitePieces()
 b.reRoll()
@@ -28,6 +29,8 @@ while c.running:
             d.CheckDragRelease()
         elif event.type==pygame.MOUSEMOTION:
             d.CheckDragging()
+
+    d.checkForResummon()
 
 
     c.myScreen.fill(c.white)
