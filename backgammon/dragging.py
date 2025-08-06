@@ -18,9 +18,6 @@ def CheckDragClick():
         for space in c.spaces:
             if space.collidepoint(pygame.mouse.get_pos())and c.spaces.index(space)>17 and (25-c.roll1[1]==c.spaces.index(space)+1 or 25-c.roll2[1]==c.spaces.index(space)+1):
                 c.resummonSpot=c.spaces.index(space)
-                center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
-                c.blackpieces.append([center,c.radius,c.resummonSpot])
-                c.blackdeadpieces.pop()
                 break
         #if not resummon(Normal move)
     else:
@@ -54,49 +51,49 @@ def CheckDragClick():
 
 def CheckDragRelease():
     if c.isResummoningW:
+        print("checkdragReleaseResummoningwhite")
         #add capturing
         bp=[]
         for piece in c.blackpieces:
             if piece[2] == c.resummonSpot:
                 bp.append(piece)
         if len(bp)==1:
+            print("Thereis1BlackPieceInRessumonSpot")
             capture(bp[0],c.gray)
             center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
-            c.whitepieces.append([center,c.radius,c.resummonSpot])
-            c.whitedeadpieces.pop()
-            c.movesLeft-=c.resummonSpot-1
-            c.isResummoningW=False
         elif len(bp)>1:
             return
         else:
             #dont allow other color to sommun if more than 2 pieces of opposite color
             center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
-            c.whitepieces.append([center,c.radius,c.resummonSpot])
-            c.whitedeadpieces.pop()
-            c.movesLeft-=c.resummonSpot-1
-            c.isResummoningW=False
+
+        c.whitepieces.append([center,c.radius,c.resummonSpot])
+        c.whitedeadpieces.pop()
+        c.movesLeft-=c.resummonSpot-1
+        c.isResummoningW=False
     elif c.isResummoningB:
+        print("CheckDragRelease BlackisResumoning")
         wp=[]
         for piece in c.whitepieces:
             if piece[2] == c.resummonSpot:
                 wp.append(piece)
         if len(wp)==1:
+            print("Thereis1WhitePieceInRessumonSpot")
             capture(wp[0],c.color)
             center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
-            c.blackpieces.append([center,c.radius,c.resummonSpot])
-            c.blackdeadpieces.pop()
-            c.movesLeft-=c.resummonSpot-1
-            c.isResummoningB=False
+
         elif len(wp)>1:
             return
         else:
             center=(c.spaces[c.resummonSpot].x+c.spacing1/2,findY(c.resummonSpot))
-            c.blackpieces.append([center,c.radius,c.resummonSpot])
-            c.blackdeadpieces.pop()
-            c.movesLeft -= 25-c.resummonSpot-1
-            c.isResummoningB=False
+
+        c.blackpieces.append([center,c.radius,c.resummonSpot])
+        c.blackdeadpieces.pop()
+        c.movesLeft -= 25-c.resummonSpot-1
+        c.isResummoningB=False
     else:
     #drawing=False
+        print("checkdragRelease Normal Move")
         c.dragging=False
         if(len(c.dragPieces)>0):
             FinalPos=c.dragPieces.pop(0)
@@ -230,9 +227,11 @@ def findY(space):
 def capture(piece,color):
     if color==c.color:
         c.whitepieces.remove(piece)
+        print("In capture adding to white dead pieces")
         c.whitedeadpieces.append((piece))
     elif color==c.gray:
         c.blackpieces.remove(piece)
+        print("in capture adding black dead piece")
         c.blackdeadpieces.append((piece))
 
 def checkForResummon():
