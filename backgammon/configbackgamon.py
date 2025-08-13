@@ -1,4 +1,5 @@
 import sys, pygame
+pygame.font.init()
 white=255,255,255
 tri=[]
 blackpieces=[]
@@ -37,10 +38,37 @@ intial_pos=[]
 #These are the imagineary rectatgles that make up spaces on the board
 spaces=[]
 secondSpace=-1
-movesLeft=totalRoll
+movesLeft=[roll1[1],roll2[1]]
 alerts=[]
 whiteTurn=False
 blackTurn=False
 isResummoningW=False
 isResummoningB=False
 resummonSpot=-1
+
+#Alerts
+
+font= pygame.font.Font(None,32)
+alert_text='clicked space to resummon'
+Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+resummonBlackAlert=[Text,alert_text]
+
+
+alert_text='clicked space to resummon'
+Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+resummonWhiteAlert=[Text,alert_text]
+
+
+alert_text='black\'s turn'
+Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+BlackTurnAlert=[Text,alert_text]
+
+
+alert_text='white\'s turn'
+Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+WhiteTurnAlert=[Text,alert_text]
+
+
+alert_text='dead piece'
+Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+deadPieceAlert=[Text,alert_text]
