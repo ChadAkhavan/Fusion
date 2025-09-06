@@ -1,6 +1,5 @@
 import sys, pygame
 import configbackgamon as c
-import dragging as d
 import random
 
 def diceroll():
@@ -54,7 +53,11 @@ def reRoll():
         else:
             if c.deadPieceAlert in c.alerts:
                 c.alerts.remove(c.deadPieceAlert)
-        d.checkForResummon()
+        alertForResummon()
+        skipTurn()
+        #insert fucntion for checking if there are valid moves
+
+
 def checkTurn():
     if c.roll1[1]>c.roll2[1]:
         c.blackTurn=True
@@ -298,7 +301,7 @@ def DrawEverything():
     
     c.myScreen.blit(c.roll1[0], (6.10*c.spacing1, c.height/2.75))
     c.myScreen.blit(c.roll2[0], (7.13*c.spacing1, c.height/2.75))
-    c.myScreen.blit(c.Roll, (649,649))
+    c.myScreen.blit(c.Roll, (200,200))
 
 def DrawDeadPieces():
     Wleft=c.spacing1*6
@@ -316,3 +319,79 @@ def DrawDeadPieces():
     for piece in c.blackdeadpieces:
         c.blackdeadrectangles.append((pygame.Rect(Bleft,btop,width,hieght),piece))
         btop+=30
+
+def alertForResummon():
+    if len(c.whitedeadrectangles)>0 and c.whiteTurn:
+        c.alerts.append(c.resummonWhiteAlert)
+    if len(c.blackdeadrectangles)>0 and c.blackTurn:
+        c.alerts.append(c.resummonBlackAlert)
+        for space in c.spaces:
+            if space.collidepoint(pygame.mouse.get_pos()) and c.spaces.index(space)>17:
+                pass
+
+def skipTurn():
+    if c.whiteTurn:
+        #for resummon
+        if(len(c.whitedeadrectangles)>0):
+            posSpace1 =  c.roll1[1] 
+            posSpace2 = c.roll2[1]
+            skipTurnHelperW(posSpace1,posSpace2)
+        #for reg turns
+        else:
+            pass
+            '''for wp in c.whitepieces:
+                wpSpace = wp[2]
+                posSpace1 =  wpSpace + c.roll1[1] 
+                posSpace2 = wpSpace + c.roll2[1]
+                skipTurnHelperW(posSpace1,posSpace2)'''
+                
+    if c.blackTurn:
+        #for resummon
+        if(len(c.blackdeadrectangles)>0):
+            posSpace1 = 24 - c.roll1[1]
+            posSpace2 = 24 - c.roll2[1]
+            skipTurnHelperB(posSpace1,posSpace2)
+        #for reg turns
+        else:
+            pass
+            '''for bp in c.blackpieces:
+                bpSpace = bp[2]
+                posSpace1 =  bpSpace - c.roll1[1] 
+                posSpace2 = bpSpace - c.roll2[1]
+                skipTurnHelperB(posSpace1,posSpace2)'''
+           
+
+def skipTurnHelperW(posSpace1,posSpace2):
+    bp1 = []
+    bp2 = []
+    for bp in c.blackpieces:
+        if bp[2] == posSpace1:
+            bp1.append(bp)
+        if bp[2] == posSpace2:
+            bp2.append(bp)
+    if len(bp1)>1 and len(bp2)>1:
+        print("Turn skipped because of no moves, roll was "+str(posSpace1)+" , "+str(posSpace2))
+        alert_rect=c.turnSkippedAlert[0].get_rect()
+        alert_rect.center=(c.width/2,c.height/2)
+        c.myScreen.blit(c.turnSkippedAlert[0],alert_rect)
+        pygame.time.wait(10000)
+        c.movesLeft = []
+        reRoll()
+
+def skipTurnHelperB(posSpace1,posSpace2):
+    wp1 = []
+    wp2 = []
+    for wp in c.whitepieces:
+        if wp[2] == posSpace1:
+            wp1.append(wp)
+        if wp[2] == posSpace2:
+            wp2.append(wp)
+    if len(wp1)>1 and len(wp2)>1:
+        print("Turn skipped because of no moves, roll was "+str(-(posSpace1-24))+" , "+str(-(posSpace2-24)))
+        alert_rect=c.turnSkippedAlert[0].get_rect()
+        alert_rect.center=(c.width/2,c.height/2)
+        c.myScreen.blit(c.turnSkippedAlert[0],alert_rect)
+        pygame.display.flip()
+        pygame.time.wait(10000)
+        c.movesLeft = []
+        reRoll()
