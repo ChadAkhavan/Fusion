@@ -18,8 +18,8 @@ dragging=False
 running=True
 dragPieces=[]
 intialdrag=[]
-width = 1500
-height = 1100
+width = 750
+height = 550
 radius=height/24
 diameter=height/12
 spacing1=width/14
@@ -29,8 +29,8 @@ size = (width,height)
 myScreen=pygame.display.set_mode(size)
 rolledNums = []
 Roll=pygame.image.load("images/diceroll.png")
-Roll=pygame.transform.scale(Roll,(200,200))
-rollRect = Roll.get_rect(topleft=(649,649))
+Roll=pygame.transform.scale(Roll,(100,100))
+rollRect = Roll.get_rect(topleft=(200,200))
 roll1=[pygame.image.load("images/dice1.png"),0]
 roll2=[pygame.image.load("images/dice1.png"),0]
 totalRoll=0
@@ -72,3 +72,7 @@ WhiteTurnAlert=[Text,alert_text]
 alert_text='dead piece'
 Text=font.render(alert_text, True, (255,255,255), (0,0,0))
 deadPieceAlert=[Text,alert_text]
+
+alert_text='Turn Skipped'
+Text=font.render(alert_text, True, (255,255,255), (0,0,0))
+turnSkippedAlert=[Text,alert_text]
