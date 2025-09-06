@@ -164,7 +164,6 @@ def isValidMove(newSpot,pos):
                 capture(wp[0],color)
             return newSpot
         else:
-            
             return -1
     elif color==c.gray and c.whiteTurn:
         bp=[]
@@ -177,10 +176,8 @@ def isValidMove(newSpot,pos):
                 capture(bp[0],color)
             return newSpot
         else:
-            
             return -1
     else:
-        print("No Valid moves left")
         return -1
         
 def findclosestspace(piece,space):
@@ -223,11 +220,4 @@ def capture(piece,color):
         print("in capture adding black dead piece")
         c.blackdeadpieces.append((piece))
 
-def checkForResummon():
-    if len(c.whitedeadrectangles)>0 and c.whiteTurn:
-        c.alerts.append(c.resummonWhiteAlert)
-    if len(c.blackdeadrectangles)>0 and c.blackTurn:
-        c.alerts.append(c.resummonBlackAlert)
-        for space in c.spaces:
-            if space.collidepoint(pygame.mouse.get_pos()) and c.spaces.index(space)>17:
-                pass
+
